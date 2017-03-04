@@ -86,8 +86,6 @@ class DVA(object):
                 nearest_snake_head
             )
 
-            print nearest_snake_cost, nearest_food_nearest_snake_cost
-
         current_path_to_tail = self.__find_path(
             snake_head,
             snake_tail
@@ -144,7 +142,6 @@ class DVA(object):
         self.BLACKBOARD['snakes'] = data['snakes']
         self.BLACKBOARD['food'] = data['food']
         self.__update_self(data['you'], data['snakes'])
-        print self.BLACKBOARD['enemy_snakes']
         # Update graph
         self.GRAPH.update(self.BLACKBOARD)
 
