@@ -88,7 +88,7 @@ class DVA(object):
         next_coord = path[0]
         future_path_to_tail = self.__find_path(next_coord, self.BLACKBOARD['snake_tail_coord'])
 
-        if len(future_path_to_tail) == 0:
+        if len(future_path_to_tail) == 0 and len(current_path_to_tail) > 0:
             next_coord = current_path_to_tail[0]
 
         diff = (
