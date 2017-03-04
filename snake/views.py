@@ -14,7 +14,7 @@ def start(request):
         game = (game_id, DVA())
         GAMES.append(game)
 
-    game_id, dva = game
+    (game_id, dva) = game
 
     response = dict(
         color=dva.get_color(),
@@ -36,21 +36,23 @@ def move(request):
         game = (game_id, DVA())
         GAMES.append(game)
 
-    game_id, dva = game
+    (game_id, dva) = game
 
     dva.update(data)
-    move = dva.get_move()
+    next_move = dva.get_move()
+
     response = dict(
-        move=move,
+        move=next_move,
         taunt=dva.get_random_taunt('set_up')
     )
+
     return Response(response)
 
 def get_game(game_id):
     """Returns a game instance"""
     for game in GAMES:
-        local_game_id, dva = game
+        (local_game_id, dva) = game
         if game_id == local_game_id:
-            return dva
+            return game
 
     return None
