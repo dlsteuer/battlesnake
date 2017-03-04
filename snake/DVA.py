@@ -2,6 +2,7 @@
 import random
 from .Graph import Graph
 from .a_star import a_star_search
+import time
 
 class DVA(object):
     """Represents the Battlesnake D.Va"""
@@ -66,6 +67,7 @@ class DVA(object):
 
     def get_move(self):
         """Returns the next moves relative direction"""
+        start = time.time()
         snake_head = self.BLACKBOARD['snake_head_coord']
         snake_tail = self.BLACKBOARD['snake_tail_coord']
         nearest_food = self.BLACKBOARD['nearest_food']
@@ -118,6 +120,9 @@ class DVA(object):
             next_coord[1] - self.BLACKBOARD['snake_head_coord'][1]
         )
 
+        end = time.time()
+        print "get_move() runtime: %.2f" % (end - start)
+
         if diff == (0, 1):
             return 'down'
         elif diff == (0, -1):
@@ -134,6 +139,7 @@ class DVA(object):
 
     def update(self, data):
         """Updates object based on Battlesnake turn data"""
+        start = time.time()
         # Check if we're initialized, if not, init
         if not self.INIT:
             self.init(data)
@@ -144,7 +150,7 @@ class DVA(object):
         # Update graph
         self.GRAPH.update(self.BLACKBOARD)
 
-        nearest_snake = self.__find_nearest_snake()
+        nearest_snake = None #self.__find_nearest_snake()
         nearest_food = self.__find_nearest_food()
 
         if nearest_snake is not None:
@@ -152,6 +158,9 @@ class DVA(object):
 
         if nearest_food is not None:
             self.BLACKBOARD['nearest_food'] = nearest_food
+
+        end = time.time()
+        print "update() runtime: %.2f" % (end - start)
 
         return
 
