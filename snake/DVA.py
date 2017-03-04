@@ -92,7 +92,7 @@ class DVA(object):
             snake_tail
         )
 
-        if nearest_snake is None or nearest_food_cost <= nearest_food_nearest_snake_cost:
+        if nearest_snake is None or nearest_food_cost < nearest_food_nearest_snake_cost:
             path = self.__find_path(
                 self.BLACKBOARD['snake_head_coord'],
                 nearest_food_coord
