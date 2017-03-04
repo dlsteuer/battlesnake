@@ -66,35 +66,23 @@ class DVA(object):
     def get_move(self):
         """Returns the next moves relative direction"""
 
-        path = self.BLACKBOARD['path']
+        path = self.__find_path(
+            self.BLACKBOARD['snake_head_coord'],
+            self.BLACKBOARD['target_coord']
+        )
 
         # If no path to food exists, try finding a path to our tail
         if len(path) == 0:
-            coord = self.BLACKBOARD['snake_tail_coord']
-
-            self.BLACKBOARD['target_coord'] = (coord[0], coord[1])
-            self.__find_path()
-
-        path = self.BLACKBOARD['path']
+            coord_1 = self.BLACKBOARD['snake_head_coord']
+            coord_2 = self.BLACKBOARD['snake_tail_coord']
+            path = self.__find_path(coord_1, coord_2)
 
         if len(path) == 0:
-            own_cost = self.GRAPH.cost(
-                self.BLACKBOARD['snake_head_coord'],
-                self.BLACKBOARD['snake_tail_coord']
-            )
-            ideal_cost = -1
-            ideal_coord = (0, 0)
+            coord_1 = self.BLACKBOARD['snake_head_coord']
+            coord_2 = self.GRAPH.farthest_node(self.BLACKBOARD['snake_head_coord'])
+            path = self.__find_path(coord_1, coord_2)
 
-            for neighbor in self.GRAPH.neighbors(self.BLACKBOARD['snake_head_coord']):
-                cost = self.GRAPH.cost(neighbor, self.BLACKBOARD['snake_tail_coord'])
-
-                if cost <= own_cost and cost > ideal_cost:
-                    ideal_cost = cost
-                    ideal_coord = neighbor
-
-            next_coord = ideal_coord
-        else:
-            next_coord = self.BLACKBOARD['path'][0]
+        next_coord = path[0]
 
         diff = (
             next_coord[0] - self.BLACKBOARD['snake_head_coord'][0],
@@ -132,7 +120,6 @@ class DVA(object):
         if nearest_food is not None:
             self.BLACKBOARD['target_coord'] = nearest_food
 
-        self.__find_path()
         return
 
     def __update_self(self, snake_id, snakes):
@@ -170,19 +157,19 @@ class DVA(object):
 
         return lowest_cost_coord
 
-    def __find_path(self):
+    def __find_path(self, node_1, node_2):
         """Updates the A* pathing logic"""
         # Obtain path mapping based on graph and start/end points
         came_from = a_star_search(
             self.GRAPH,
-            self.BLACKBOARD['snake_head_coord'],
-            self.BLACKBOARD['target_coord']
+            node_1,
+            node_2
         )
 
         # Build path array based on path mapping
         path = []
-        node = self.BLACKBOARD['target_coord']
-        while node != self.BLACKBOARD['snake_head_coord']:
+        node = node_2
+        while node != node_1:
             # If node is not in mapping, no path exists
             if node in came_from:
                 path.append(node)
@@ -193,4 +180,4 @@ class DVA(object):
                 break
         path.reverse()
 
-        self.BLACKBOARD['path'] = path
+        return path

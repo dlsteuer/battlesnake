@@ -22,6 +22,7 @@ def move(request):
     DVA.update(data)
     move = DVA.get_move()
     response = dict(
-        move=move
+        move=move,
+        taunt=DVA.get_random_taunt('set_up')
     )
     return Response(response)
