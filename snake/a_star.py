@@ -1,5 +1,6 @@
 """A* algorithm based on http://www.redblobgames.com/pathfinding/a-star/implementation.html"""
 from Queue import PriorityQueue
+import time
 
 def heuristic(coord_1, coord_2):
     """Determines the approximate cost going from one coord to another"""
@@ -9,6 +10,7 @@ def heuristic(coord_1, coord_2):
 
 def a_star_search(graph, start_node, goal_node):
     """Determines a good path from start to goal based on heuristic"""
+    start = time.time()
     to_visit = PriorityQueue()
     to_visit.put((0, start_node))
     came_from = {}
@@ -29,5 +31,8 @@ def a_star_search(graph, start_node, goal_node):
                 priority = new_cost + heuristic(goal_node, next_node)
                 to_visit.put((priority, next_node))
                 came_from[next_node] = current
+
+    end = time.time()
+    print "a_star_search() runtime: %.2f" % (end - start)
 
     return came_from
