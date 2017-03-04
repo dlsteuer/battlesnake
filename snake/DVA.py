@@ -71,11 +71,14 @@ class DVA(object):
             self.BLACKBOARD['target_coord']
         )
 
+        current_path_to_tail = self.__find_path(
+            self.BLACKBOARD['snake_head_coord'],
+            self.BLACKBOARD['snake_tail_coord']
+        )
+
         # If no path to food exists, try finding a path to our tail
         if len(path) == 0:
-            coord_1 = self.BLACKBOARD['snake_head_coord']
-            coord_2 = self.BLACKBOARD['snake_tail_coord']
-            path = self.__find_path(coord_1, coord_2)
+            path = current_path_to_tail
 
         if len(path) == 0:
             coord_1 = self.BLACKBOARD['snake_head_coord']
@@ -83,6 +86,10 @@ class DVA(object):
             path = self.__find_path(coord_1, coord_2)
 
         next_coord = path[0]
+        future_path_to_tail = self.__find_path(next_coord, self.BLACKBOARD['snake_tail_coord'])
+
+        if len(future_path_to_tail) == 0:
+            next_coord = current_path_to_tail[0]
 
         diff = (
             next_coord[0] - self.BLACKBOARD['snake_head_coord'][0],
