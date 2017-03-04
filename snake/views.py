@@ -10,7 +10,7 @@ def start(request):
     game_id = request.data['game_id']
     game = get_game(game_id)
 
-    if game is not None:
+    if game is None:
         game = (game_id, DVA())
         GAMES.append(game)
 
@@ -32,7 +32,7 @@ def move(request):
     game_id = request.data['game_id']
     game = get_game(game_id)
 
-    if game is not None:
+    if game is None:
         game = (game_id, DVA())
         GAMES.append(game)
 
