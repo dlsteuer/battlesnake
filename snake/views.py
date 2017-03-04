@@ -29,6 +29,7 @@ def start(request):
 @api_view(['POST'])
 def move(request):
     """Handles a move request"""
+    print 'move()'
     data = request.data
     game_id = request.data['game_id']
     game = get_game(game_id)
