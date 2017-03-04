@@ -32,6 +32,7 @@ class DVA(object):
         'snake_tail_coord': (-1, -1),
         'target_coord': (-1, -1),
         'path': {},
+        'food': [],
         'snakes': [],
     }
 
@@ -84,7 +85,7 @@ class DVA(object):
             ideal_cost = -1
             ideal_coord = (0, 0)
 
-            for neighbor in self.GRAPH.neighbors(self.BLACKBOARD['path']):
+            for neighbor in self.GRAPH.neighbors(self.BLACKBOARD['snake_head_coord']):
                 cost = self.GRAPH.cost(neighbor, self.BLACKBOARD['snake_tail_coord'])
 
                 if cost <= own_cost and cost > ideal_cost:
@@ -121,15 +122,53 @@ class DVA(object):
             self.init(data)
 
         self.BLACKBOARD['snakes'] = data['snakes']
-        self.BLACKBOARD['target_coord'] = (
-            data['food'][0][0],
-            data['food'][0][1]
-        )
+        self.BLACKBOARD['food'] = data['food']
         self.__update_self(data['you'], data['snakes'])
         # Update graph
         self.GRAPH.update(self.BLACKBOARD)
+
+        nearest_food = self.__find_nearest_food()
+
+        if nearest_food is not None:
+            self.BLACKBOARD['target_coord'] = nearest_food
+
         self.__find_path()
         return
+
+    def __update_self(self, snake_id, snakes):
+        """Updates snake based on Battlesnake turn data"""
+        for snake in snakes:
+            if snake_id == snake['id']:
+                snake_len = len(snake['coords'])
+                self.BLACKBOARD['snake'] = snake
+                self.BLACKBOARD['snake_len'] = snake_len
+                self.BLACKBOARD['snake_head_coord'] = (
+                    snake['coords'][0][0],
+                    snake['coords'][0][1]
+                )
+                self.BLACKBOARD['snake_tail_coord'] = (
+                    snake['coords'][snake_len - 1][0],
+                    snake['coords'][snake_len - 1][1]
+                )
+        return
+
+    def __find_nearest_food(self):
+        food = self.BLACKBOARD['food']
+        coord_1 = self.BLACKBOARD['snake_head_coord']
+        lowest_cost_coord = None
+        lowest_cost = -1
+
+        for food_coord in food:
+            coord_2 = (food_coord[0], food_coord[1])
+            cost = self.GRAPH.cost(
+                coord_1,
+                coord_2
+            )
+            if lowest_cost == -1 or lowest_cost > cost:
+                lowest_cost_coord = coord_2
+                lowest_cost = cost
+
+        return lowest_cost_coord
 
     def __find_path(self):
         """Updates the A* pathing logic"""
@@ -155,21 +194,3 @@ class DVA(object):
         path.reverse()
 
         self.BLACKBOARD['path'] = path
-
-    def __update_self(self, snake_id, snakes):
-        """Updates snake based on Battlesnake turn data"""
-        for snake in snakes:
-            if snake_id == snake['id']:
-                snake_len = len(snake['coords'])
-                self.BLACKBOARD['snake'] = snake
-                self.BLACKBOARD['snake_len'] = snake_len
-                self.BLACKBOARD['snake_head_coord'] = (
-                    snake['coords'][0][0],
-                    snake['coords'][0][1]
-                )
-                self.BLACKBOARD['snake_tail_coord'] = (
-                    snake['coords'][snake_len - 1][0],
-                    snake['coords'][snake_len - 1][1]
-                )
-        return
-
