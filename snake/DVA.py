@@ -150,7 +150,7 @@ class DVA(object):
         # Update graph
         self.GRAPH.update(self.BLACKBOARD)
 
-        nearest_snake = None #self.__find_nearest_snake()
+        nearest_snake = self.__find_nearest_snake()
         nearest_food = self.__find_nearest_food()
 
         if nearest_snake is not None:
