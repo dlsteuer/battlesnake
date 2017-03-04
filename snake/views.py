@@ -2,21 +2,13 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .DVA import DVA
 
-GAMES = []
-
 @api_view(['POST'])
 def start(request):
     """Handles a start request"""
-    print 'start()'
-    game_id = request.data['game_id']
-    game = get_game(game_id)
+    data = request.data
 
-    if game is not None:
-        GAMES.remove(game)
-
-    game = (game_id, DVA())
-    (game_id, dva) = game
-    GAMES.append(game)
+    dva = DVA()
+    dva.init(data)
 
     response = dict(
         color=dva.get_color(),
@@ -31,15 +23,9 @@ def move(request):
     """Handles a move request"""
     print 'move()'
     data = request.data
-    game_id = request.data['game_id']
-    game = get_game(game_id)
 
-    if game is None:
-        game = (game_id, DVA())
-        GAMES.append(game)
-
-    (game_id, dva) = game
-
+    dva = DVA()
+    dva.init(data)
     dva.update(data)
     next_move = dva.get_move()
 
