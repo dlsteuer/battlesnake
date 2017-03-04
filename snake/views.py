@@ -25,7 +25,6 @@ def start(request):
     )
     return Response(response)
 
-
 @api_view(['POST'])
 def move(request):
     """Handles a move request"""
