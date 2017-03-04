@@ -33,6 +33,6 @@ def a_star_search(graph, start_node, goal_node):
                 came_from[next_node] = current
 
     end = time.time()
-    print "a_star_search(%s, %s) runtime: %.2f" % (start_node, goal_node, (end - start))
+    print "a_star_search(%s, %s) runtime: %.3f" % (start_node, goal_node, (end - start))
 
     return came_from

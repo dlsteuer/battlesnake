@@ -123,7 +123,7 @@ class DVA(object):
         )
 
         end = time.time()
-        print "get_move() runtime: %.2f" % (end - start)
+        print "get_move() runtime: %.3f" % (end - start)
 
         if diff == (0, 1):
             return 'down'
@@ -162,7 +162,7 @@ class DVA(object):
             self.BLACKBOARD['nearest_food'] = nearest_food
 
         end = time.time()
-        print "update() runtime: %.2f" % (end - start)
+        print "update() runtime: %.3f" % (end - start)
 
         return
 
