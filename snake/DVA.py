@@ -35,6 +35,7 @@ class DVA(object):
         'path': None,
         'food': None,
         'snakes': None,
+        'enemy_snakes': None,
     }
 
     GRAPH = Graph()
@@ -84,6 +85,8 @@ class DVA(object):
                 nearest_food_coord,
                 nearest_snake_head
             )
+
+            print nearest_snake_cost, nearest_food_nearest_snake_cost
 
         current_path_to_tail = self.__find_path(
             snake_head,
@@ -141,6 +144,7 @@ class DVA(object):
         self.BLACKBOARD['snakes'] = data['snakes']
         self.BLACKBOARD['food'] = data['food']
         self.__update_self(data['you'], data['snakes'])
+        print self.BLACKBOARD['enemy_snakes']
         # Update graph
         self.GRAPH.update(self.BLACKBOARD)
 
@@ -170,15 +174,17 @@ class DVA(object):
                     snake['coords'][snake_len - 1][0],
                     snake['coords'][snake_len - 1][1]
                 )
+                self.BLACKBOARD['enemy_snakes'] = list(self.BLACKBOARD['snakes'])
+                self.BLACKBOARD['enemy_snakes'].remove(snake)
         return
 
     def __find_nearest_snake(self):
         coord_1 = self.BLACKBOARD['snake_head_coord']
-        snakes = self.BLACKBOARD['snakes']
+        enemy_snakes = self.BLACKBOARD['enemy_snakes']
         lowest_cost = -1
         lowest_cost_snake = None
 
-        for snake in snakes:
+        for snake in enemy_snakes:
             coord_2 = snake['coords'][0]
             cost = self.GRAPH.cost(coord_1, coord_2)
 
