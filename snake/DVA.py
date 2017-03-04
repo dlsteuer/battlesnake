@@ -32,7 +32,6 @@ class DVA(object):
         'snake_tail_coord': None,
         'nearest_snake': None,
         'nearest_food': None,
-        'path': None,
         'food': None,
         'snakes': None,
         'enemy_snakes': None,
@@ -70,7 +69,7 @@ class DVA(object):
         snake_head = self.BLACKBOARD['snake_head_coord']
         snake_tail = self.BLACKBOARD['snake_tail_coord']
         nearest_food = self.BLACKBOARD['nearest_food']
-        nearest_snake = None
+        nearest_snake = self.BLACKBOARD['nearest_snake']
 
         (nearest_food_cost, nearest_food_coord) = nearest_food
 
