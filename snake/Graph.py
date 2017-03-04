@@ -10,16 +10,19 @@ class Graph(object):
 
     def init(self, width, height):
         """Initializes the graph"""
-        for y_coord in range(height):
-            for x_coord in range(width):
+        for x_coord in range(width):
+            for y_coord in range(height):
                 self.all_nodes.append((x_coord, y_coord))
 
     def update(self, blackboard):
         """Updates graph based on blackboard data"""
         self.inaccessible_nodes = []
+        snakes = blackboard['snakes']
 
-        for snake in blackboard['snakes']:
-            for coord in snake['coords']:
+        for snake in snakes:
+            coords = snake['coords']
+
+            for coord in coords:
                 x_coord = coord[0]
                 y_coord = coord[1]
                 self.inaccessible_nodes.append((x_coord, y_coord))
@@ -35,8 +38,8 @@ class Graph(object):
                 results.append(neighbor)
         return results
 
-    def cost(self, start_node, end_node):
+    def cost(self, node_1, node_2):
         """Returns cost of navigating between two nodes"""
-        (x_coord_1, y_coord_1) = start_node
-        (x_coord_2, y_coord_2) = end_node
+        (x_coord_1, y_coord_1) = node_1
+        (x_coord_2, y_coord_2) = node_2
         return abs(x_coord_1 - x_coord_2) + abs(y_coord_1 - y_coord_2)
