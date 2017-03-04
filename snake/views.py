@@ -7,6 +7,7 @@ GAMES = []
 @api_view(['POST'])
 def start(request):
     """Handles a start request"""
+    print 'start()'
     game_id = request.data['game_id']
     game = get_game(game_id)
 
