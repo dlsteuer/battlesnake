@@ -10,7 +10,7 @@ def start(request):
     game_id = request.data['game_id']
     game = get_game(game_id)
 
-    if not game:
+    if game is not None:
         game = (game_id, DVA())
         GAMES.append(game)
 
@@ -32,7 +32,7 @@ def move(request):
     game_id = request.data['game_id']
     game = get_game(game_id)
 
-    if not game:
+    if game is not None:
         game = (game_id, DVA())
         GAMES.append(game)
 
@@ -51,7 +51,7 @@ def move(request):
 def get_game(game_id):
     """Returns a game instance"""
     for game in GAMES:
-        (local_game_id, dva) = game
+        local_game_id = game[0]
         if game_id == local_game_id:
             return game
 
