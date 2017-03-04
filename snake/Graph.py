@@ -4,12 +4,16 @@ class Graph(object):
     """Class representing a Graph"""
     all_nodes = []
     inaccessible_nodes = []
+    width = -1
+    height = -1
 
     def __init__(self):
         return
 
     def init(self, width, height):
         """Initializes the graph"""
+        self.width = width
+        self.height = height
         for x_coord in range(width):
             for y_coord in range(height):
                 self.all_nodes.append((x_coord, y_coord))
@@ -69,9 +73,19 @@ class Graph(object):
                 neighbor = (eval_node[0] + direction[0], eval_node[1] + direction[1])
                 if (
                         neighbor not in results
-                        and neighbor in self.all_nodes
+                        and self.is_node_in_bounds(neighbor)
                         and neighbor not in self.inaccessible_nodes
                 ):
                     results.append(neighbor)
                     nodes.append(neighbor)
         return results
+
+    def is_node_in_bounds(self, node):
+        (x_coord, y_coord) = node
+
+        if x_coord < 0 or x_coord > self.width:
+            return False
+        elif y_coord < 0 or y_coord > self.height:
+            return False
+        else:
+            return True
