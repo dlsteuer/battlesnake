@@ -30,7 +30,8 @@ class DVA(object):
         'snake_len': -1,
         'snake_head_coord': (-1, -1),
         'snake_tail_coord': (-1, -1),
-        'target_coord': (-1, -1),
+        'nearest_snake': (),
+        'nearest_food': (),
         'path': {},
         'food': [],
         'snakes': [],
@@ -65,16 +66,30 @@ class DVA(object):
 
     def get_move(self):
         """Returns the next moves relative direction"""
+        snake_head = self.BLACKBOARD['snake_head_coord']
+        snake_tail = self.BLACKBOARD['snake_tail_coord']
+        nearest_food = self.BLACKBOARD['nearest_food']
+        nearest_snake = self.BLACKBOARD['nearest_snake_coord']
 
-        path = self.__find_path(
-            self.BLACKBOARD['snake_head_coord'],
-            self.BLACKBOARD['target_coord']
+        (nearest_food_cost, nearest_food_coord) = nearest_food
+        (nearest_snake_cost, nearest_snake_coord) = nearest_snake
+        nearest_food_from_nearest_snake_cost = self.GRAPH.cost(
+            nearest_food_coord,
+            nearest_snake_coord
         )
 
         current_path_to_tail = self.__find_path(
-            self.BLACKBOARD['snake_head_coord'],
-            self.BLACKBOARD['snake_tail_coord']
+            snake_head,
+            snake_tail
         )
+
+        if nearest_food_cost <= nearest_food_from_nearest_snake_cost:
+            path = self.__find_path(
+                self.BLACKBOARD['snake_head_coord'],
+                nearest_food_coord
+            )
+        else:
+            path = current_path_to_tail
 
         # If no path to food exists, try finding a path to our tail
         if len(path) == 0:
@@ -122,10 +137,14 @@ class DVA(object):
         # Update graph
         self.GRAPH.update(self.BLACKBOARD)
 
+        nearest_snake = self.__find_nearest_snake()
         nearest_food = self.__find_nearest_food()
 
+        if nearest_snake is not None:
+            self.BLACKBOARD['nearest_snake'] = nearest_snake
+
         if nearest_food is not None:
-            self.BLACKBOARD['target_coord'] = nearest_food
+            self.BLACKBOARD['nearest_food'] = nearest_food
 
         return
 
@@ -146,6 +165,22 @@ class DVA(object):
                 )
         return
 
+    def __find_nearest_snake(self):
+        coord_1 = self.BLACKBOARD['snake_head_coord']
+        snakes = self.BLACKBOARD['snakes']
+        lowest_cost = -1
+        lowest_cost_snake = None
+
+        for snake in snakes:
+            coord_2 = snake['coords'][0]
+            cost = self.GRAPH.cost(coord_1, coord_2)
+
+            if lowest_cost == -1 or cost < lowest_cost:
+                lowest_cost_snake = snake
+                lowest_cost = cost
+
+        return (lowest_cost, lowest_cost_snake)
+
     def __find_nearest_food(self):
         food = self.BLACKBOARD['food']
         coord_1 = self.BLACKBOARD['snake_head_coord']
@@ -162,7 +197,7 @@ class DVA(object):
                 lowest_cost_coord = coord_2
                 lowest_cost = cost
 
-        return lowest_cost_coord
+        return (lowest_cost, lowest_cost_coord)
 
     def __find_path(self, node_1, node_2):
         """Updates the A* pathing logic"""
