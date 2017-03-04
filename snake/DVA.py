@@ -26,15 +26,15 @@ class DVA(object):
 
     # AI Blackboard
     BLACKBOARD = {
-        'snake': {},
-        'snake_len': -1,
-        'snake_head_coord': (-1, -1),
-        'snake_tail_coord': (-1, -1),
-        'nearest_snake': (),
-        'nearest_food': (),
-        'path': {},
-        'food': [],
-        'snakes': [],
+        'snake': None,
+        'snake_len': None,
+        'snake_head_coord': None,
+        'snake_tail_coord': None,
+        'nearest_snake': None,
+        'nearest_food': None,
+        'path': None,
+        'food': None,
+        'snakes': None,
     }
 
     GRAPH = Graph()
@@ -69,21 +69,28 @@ class DVA(object):
         snake_head = self.BLACKBOARD['snake_head_coord']
         snake_tail = self.BLACKBOARD['snake_tail_coord']
         nearest_food = self.BLACKBOARD['nearest_food']
-        nearest_snake = self.BLACKBOARD['nearest_snake_coord']
+        nearest_snake = self.BLACKBOARD['nearest_snake']
 
         (nearest_food_cost, nearest_food_coord) = nearest_food
-        (nearest_snake_cost, nearest_snake_coord) = nearest_snake
-        nearest_food_from_nearest_snake_cost = self.GRAPH.cost(
-            nearest_food_coord,
-            nearest_snake_coord
-        )
+
+        if nearest_snake is not None:
+            (nearest_snake_cost, nearest_snake_object) = nearest_snake
+            nearest_snake_head = (
+                nearest_snake_object['coords'][0][0],
+                nearest_snake_object['coords'][0][1]
+            )
+
+            nearest_food_nearest_snake_cost = self.GRAPH.cost(
+                nearest_food_coord,
+                nearest_snake_head
+            )
 
         current_path_to_tail = self.__find_path(
             snake_head,
             snake_tail
         )
 
-        if nearest_food_cost <= nearest_food_from_nearest_snake_cost:
+        if nearest_snake is None or nearest_food_cost <= nearest_food_nearest_snake_cost:
             path = self.__find_path(
                 self.BLACKBOARD['snake_head_coord'],
                 nearest_food_coord
