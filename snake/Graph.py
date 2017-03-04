@@ -81,11 +81,12 @@ class Graph(object):
         return results
 
     def is_node_in_bounds(self, node):
+        """Make sure node is in bounds"""
         (x_coord, y_coord) = node
 
-        if x_coord < 0 or x_coord > self.width:
+        if x_coord < 0 or x_coord >= self.width:
             return False
-        elif y_coord < 0 or y_coord > self.height:
+        elif y_coord < 0 or y_coord >= self.height:
             return False
         else:
             return True
