@@ -10,11 +10,12 @@ def start(request):
     game_id = request.data['game_id']
     game = get_game(game_id)
 
-    if game is None:
-        game = (game_id, DVA())
-        GAMES.append(game)
+    if game is not None:
+        GAMES.remove(game)
 
+    game = (game_id, DVA())
     (game_id, dva) = game
+    GAMES.append(game)
 
     response = dict(
         color=dva.get_color(),
