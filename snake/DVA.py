@@ -100,22 +100,23 @@ class DVA(object):
         else:
             path = current_path_to_tail
 
-        # If no path to food exists, try finding a path to our tail
-        if len(path) == 0:
-            path = current_path_to_tail
+        # If no path to food exists, check if the next position can get back to the tail
+        if len(path) > 0:
+            next_coord = path[0]
 
-        if len(path) == 0:
+            if len(current_path_to_tail) > 0:
+                future_path_to_tail = self.__find_path(next_coord, current_path_to_tail[0])
+
+                if len(future_path_to_tail) == 0:
+                    path = current_path_to_tail
+        if len(path) == 0 and len(current_path_to_tail) > 0:
+            path = current_path_to_tail
+        else:
             coord_1 = self.BLACKBOARD['snake_head_coord']
             coord_2 = self.GRAPH.farthest_node(self.BLACKBOARD['snake_head_coord'])
             path = self.__find_path(coord_1, coord_2)
 
         next_coord = path[0]
-
-        if len(current_path_to_tail) > 0:
-            future_path_to_tail = self.__find_path(next_coord, current_path_to_tail[0])
-
-            if len(future_path_to_tail) == 0:
-                next_coord = current_path_to_tail[0]
 
         diff = (
             next_coord[0] - self.BLACKBOARD['snake_head_coord'][0],
