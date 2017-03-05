@@ -27,7 +27,7 @@ def alt_a_star_search(graph, start_node, goal_node):
     for kk in xrange(1000000):
         f, junk, current = heapq.heappop(heap)
         print start_node, current, goal_node
-        if current is goal_node:
+        if current == goal_node:
             print "distance:", g[current], "steps:", kk
             return link
 
