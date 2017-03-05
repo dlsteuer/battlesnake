@@ -21,7 +21,7 @@ def start(request):
 @api_view(['POST'])
 def move(request):
     """Handles a move request"""
-    # print 'move()'
+    print 'move()'
     data = request.data
 
     dva = DVA()
