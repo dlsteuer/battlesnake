@@ -30,8 +30,7 @@ def move(request):
     next_move = dva.get_move()
 
     response = dict(
-        move=next_move,
-        taunt=dva.get_random_taunt('set_up')
+        move=next_move
     )
 
     return Response(response)
