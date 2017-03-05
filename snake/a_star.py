@@ -43,7 +43,7 @@ def alt_a_star_search(graph, start_node, goal_node):
 
 def a_star_search(graph, start_node, goal_node):
     """Determines a good path from start to goal based on heuristic"""
-    start = time.time()
+    # start = time.time()
     to_visit = PriorityQueue()
     to_visit.put((0, start_node))
     came_from = {}
@@ -65,7 +65,7 @@ def a_star_search(graph, start_node, goal_node):
                 to_visit.put((priority, next_node))
                 came_from[next_node] = current
 
-    end = time.time()
-    print "a_star_search(%s, %s) runtime: %.3f" % (start_node, goal_node, (end - start))
+    # end = time.time()
+    # print "a_star_search(%s, %s) runtime: %.3f" % (start_node, goal_node, (end - start))
 
     return came_from
