@@ -109,9 +109,10 @@ class DVA(object):
 
                 if len(future_path_to_tail) == 0:
                     path = current_path_to_tail
-        if len(path) == 0 and len(current_path_to_tail) > 0:
+        elif len(path) == 0 and len(current_path_to_tail) > 0:
             path = current_path_to_tail
-        else:
+
+        if len(path) == 0:
             coord_1 = self.BLACKBOARD['snake_head_coord']
             coord_2 = self.GRAPH.farthest_node(self.BLACKBOARD['snake_head_coord'])
             path = self.__find_path(coord_1, coord_2)
