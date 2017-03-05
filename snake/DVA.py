@@ -224,7 +224,7 @@ class DVA(object):
     def __find_path(self, node_1, node_2):
         """Updates the A* pathing logic"""
         # Obtain path mapping based on graph and start/end points
-        came_from = alt_a_star_search(
+        came_from = a_star_search(
             self.GRAPH,
             node_1,
             node_2

@@ -26,7 +26,8 @@ class Graph(object):
         for snake in snakes:
             coords = snake['coords']
 
-            for coord in coords:
+            for index in range(coords) - 1:
+                coord = coords[index]
                 x_coord = coord[0]
                 y_coord = coord[1]
                 self.inaccessible_nodes.append((x_coord, y_coord))
