@@ -26,7 +26,7 @@ class Graph(object):
         for snake in snakes:
             coords = snake['coords']
 
-            for index in range(coords) - 1:
+            for index in range(len(coords)) - 1:
                 coord = coords[index]
                 x_coord = coord[0]
                 y_coord = coord[1]
