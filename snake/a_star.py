@@ -25,9 +25,9 @@ def alt_a_star_search(graph, start_node, goal_node):
     heapq.heappush(heap, (0, 0, start_node))
     # keep a count of the  number of steps, and avoid an infinite loop.
     for kk in xrange(1000000):
-        print heap
         f, junk, current = heapq.heappop(heap)
-        if current == goal_node:
+        print current, goal_node
+        if current is goal_node:
             print "distance:", g[current], "steps:", kk
             return link
 
