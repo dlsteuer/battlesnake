@@ -1,7 +1,7 @@
 """Represents the snake AI with personality D.Va"""
 import random
 from .Graph import Graph
-from .a_star import a_star_search
+from .a_star import a_star_search, alt_a_star_search
 import time
 
 class DVA(object):
@@ -224,7 +224,7 @@ class DVA(object):
     def __find_path(self, node_1, node_2):
         """Updates the A* pathing logic"""
         # Obtain path mapping based on graph and start/end points
-        came_from = a_star_search(
+        came_from = alt_a_star_search(
             self.GRAPH,
             node_1,
             node_2
