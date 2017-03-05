@@ -2,7 +2,6 @@
 
 class Graph(object):
     """Class representing a Graph"""
-    all_nodes = []
     inaccessible_nodes = []
     width = -1
     height = -1
@@ -14,9 +13,6 @@ class Graph(object):
         """Initializes the graph"""
         self.width = width
         self.height = height
-        for x_coord in range(width):
-            for y_coord in range(height):
-                self.all_nodes.append((x_coord, y_coord))
 
     def update(self, blackboard):
         """Updates graph based on blackboard data"""
@@ -39,7 +35,7 @@ class Graph(object):
         results = []
         for direction in directions:
             neighbor = (node[0] + direction[0], node[1] + direction[1])
-            if neighbor in self.all_nodes and neighbor not in self.inaccessible_nodes:
+            if self.is_node_in_bounds(node) and neighbor not in self.inaccessible_nodes:
                 results.append(neighbor)
         return results
 
