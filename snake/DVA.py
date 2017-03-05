@@ -94,7 +94,7 @@ class DVA(object):
 
         if nearest_snake is None or nearest_food_cost < nearest_food_nearest_snake_cost:
             path = self.__find_path(
-                self.BLACKBOARD['snake_head_coord'],
+                snake_head,
                 nearest_food_coord
             )
         else:
@@ -113,9 +113,8 @@ class DVA(object):
             path = current_path_to_tail
 
         if len(path) == 0:
-            coord_1 = self.BLACKBOARD['snake_head_coord']
             coord_2 = self.GRAPH.farthest_node(self.BLACKBOARD['snake_head_coord'])
-            path = self.__find_path(coord_1, coord_2)
+            path = self.__find_path(snake_head, coord_2)
 
         next_coord = path[0]
 
